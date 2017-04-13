@@ -1,23 +1,23 @@
 var user;
 
-function useEnergy() {
-    user.energy += 1;
-    displayEnergy();
-}
-
-function getTurnt() {
-    user.turnt += 1;
-    displayTurnt();
-}
-
-function displayEnergy() {
+function updateEnergy() {
     num = pad(user.energy, 3);
     $("#energy").attr("src", "/assets/energy/energy." + num + ".jpeg");
+    if (user.energy >= 23 && !window.location.href.includes('too_')) {
+        window.location.href = '/game/too_tired'
+    }
 }
 
-function displayTurnt() {
+function updateTurnt() {
     num = pad(user.turnt, 3);
     $("#turnt").attr("src", "/assets/turnt/turnt." + num + ".jpeg");
+    if (user.turnt >= 23 && !window.location.href.includes('too_')) {
+        window.location.href = '/game/too_turnt';
+    }
+}
+
+function save() {
+    localStorage.user = JSON.stringify(user);
 }
 
 $(document).ready(function() {
@@ -29,16 +29,29 @@ $(document).ready(function() {
         localStorage.user = JSON.stringify(user);
     });
 
-    displayEnergy();
-    displayTurnt();
+    updateEnergy();
+    updateTurnt();
 
-    // main page
-    $('#enter').click(function() {
-        if (($('#code').val() - 125) % 12523 == 0) {
-            window.location.href = '/game/';
-        } else {
-            $('#wrong').html('Wrong!');
+    $('.energy').click(function () {
+        user.energy += 1;
+        updateEnergy();
+    });
+
+    $('.turnt').click(function () {
+        user.turnt += 1;
+        updateTurnt();
+    });
+
+    $('.water').click(function () {
+        if (user.turnt > 0) {
+            user.turnt -= 1;
+            updateTurnt();
         }
+    });
+
+    $('.reset').click(function () {
+        user.turnt = 1;
+        user.energy = 1;
     });
 
 });
