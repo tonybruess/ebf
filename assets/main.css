@@ -1,0 +1,17 @@
+html, body, .container {
+    background: #000;
+    color: #fff;
+}
+
+.center {
+    text-align: center;
+}
+
+#sign {
+    background: #222;
+    padding: 20px 0;
+}
+
+img {
+    max-width: 100%;
+}
